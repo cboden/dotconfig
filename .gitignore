@@ -1,0 +1,13 @@
+.DS_Store
+Icon.png
+Icon.gif
+.idea
+.vagrant
+.sync
+.vscode
+npm-debug.log
+.ipynb_checkpoints
+__pycache__
+.mypy_cache
+.python-version
+.minio.sys
