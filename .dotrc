@@ -1,0 +1,47 @@
+alias config="/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME"
+
+alias whatsmyip="curl -s ifconfig.co"
+
+alias mysql="mysql -h 127.0.0.1 -p $@"
+alias psql="psql -h 127.0.0.1 $@"
+alias sqlite3="sqlite3 -column -header $@"
+
+alias docker-compose="docker compose $@"
+
+alias aws="docker run --rm -it -v ~/.aws:/root/.aws -v $(pwd):/aws amazon/aws-cli"
+alias ksqldb="docker run --rm -it confluentinc/ksqldb-cli ksql"
+alias stripe="docker run --rm -it stripe/stripe-cli:latest"
+alias hookdeck="docker run --rm -it --pull=always -v ~/.config:/config -e XDG_CONFIG_HOME="/config" hookdeck/hookdeck-cli"
+alias mc="docker run --rm -it bitnami/minio-client:latest"
+alias ctop="docker run --rm -ti --name=ctop --volume /var/run/docker.sock:/var/run/docker.sock:ro quay.io/vektorlab/ctop:latest"
+alias http-server="docker run -it --rm -p 8080:8080 -v $(PWD):/public danjellz/http-server"
+
+alias nest="npx @nestjs/cli $@"
+alias flan="npx @sdelements/flan $@"
+alias prettier="npx prettier $@"
+
+function dbt() {
+  docker run --rm -it \
+    -e DBT_LOG_PATH=/root/.dbt/logs \
+    --network=host \
+    --mount type=bind,source=`pwd`,target=/usr/app/dbt \
+    --mount type=bind,source=$HOME/.dbt/,target=/root/.dbt/ \
+    ghcr.io/dbt-labs/dbt-postgres:1.3.0 \
+    $@
+#    --mount type=bind,source=`pwd`/profiles.yml,target=/root/.dbt/ \
+}
+
+function meltano() {
+  docker run --rm -it \
+    --network=host \
+    --mount type=bind,source=`pwd`,target=/project \
+    meltano_pg \
+    $@
+}
+
+function php() {
+  docker run --rm -it -v $(pwd):/opt/app --entrypoint php wyrihaximusnet/php:7.4-nts-alpine $@
+}
+function composer() {
+  docker run --rm -it -v $(pwd):/app composer $@
+}
